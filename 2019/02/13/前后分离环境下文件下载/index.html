@@ -17,6 +17,8 @@
 
 
 
+  <meta name="description" content="前后分离环境下文件下载（VUE + Spring MVC）">
+
 
 
 
@@ -40,7 +42,7 @@
 
 
 
-<link rel="canonical" href="https://gp15237125756.github.io/cruz/">
+<link rel="canonical" href="https://gp15237125756.github.io/cruz/2019/02/13/前后分离环境下文件下载/">
 
 
 
@@ -88,7 +90,7 @@
   window.config = {"leancloud":{"app_id":null,"app_key":null},"toc":true,"fancybox":true,"pjax":true};
 </script>
 
-    <title> 禅的行囊 </title>
+    <title> 前后分离环境下文件下载（VUE + Spring MVC） - 禅的行囊 </title>
   </head>
 
   <body><div id="mobile-navbar" class="mobile-navbar">
@@ -164,15 +166,11 @@
           <div id="content" class="content">
             
   
-  <section id="posts" class="posts">
-    
-      
-        
   <article class="post">
     <header class="post-header">
       <h1 class="post-title">
         
-          <a class="post-link" href="/cruz/2019/02/13/前后分离环境下文件下载/">前后分离环境下文件下载（VUE + Spring MVC）</a>
+          前后分离环境下文件下载（VUE + Spring MVC）
         
       </h1>
 
@@ -187,15 +185,18 @@
 
     
     
+  <div class="post-toc" id="post-toc">
+    <h2 class="post-toc-title">文章目录</h2>
+    <div class="post-toc-content">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#环境"><span class="toc-text">环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#具体方法"><span class="toc-text">具体方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#node中实现"><span class="toc-text">node中实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后端的实现"><span class="toc-text">后端的实现</span></a></li></ol>
+    </div>
+  </div>
+
 
 
     <div class="post-content">
       
-        
-        
-
-        
-          <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>前端NodeJS/VueJS<br>后端Spring mvc</p>
+        <h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>前端NodeJS/VueJS<br>后端Spring mvc</p>
 <h2 id="具体方法"><a href="#具体方法" class="headerlink" title="具体方法"></a>具体方法</h2><ul>
 <li>在浏览器端实现文件下载需要后端提供接口，接口需要返回字节流以及设置<code>header</code>中的<code>Content-Disposition</code>以及<code>Content-type</code></li>
 <li>在前后分离环境下，后端下载接口的地址是动态的，需要把域名部分配置在Node的<code>config</code>中</li>
@@ -206,129 +207,64 @@
 <h2 id="node中实现"><a href="#node中实现" class="headerlink" title="node中实现"></a>node中实现</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">onDownloadPositionQrcodeImage(row) &#123;</span><br><span class="line">     const positionCode =  row.positionCode,positionName =  row.positionName;</span><br><span class="line">     this.<span class="variable">$confirm</span>(<span class="string">"是否下载二维码图片?"</span>, <span class="string">"提示"</span>, &#123;</span><br><span class="line">       confirmButtonText: <span class="string">"确定"</span>,</span><br><span class="line">       showCancelButton: <span class="literal">false</span>,</span><br><span class="line">       <span class="built_in">type</span>: <span class="string">"warning"</span></span><br><span class="line">     &#125;).<span class="keyword">then</span>(() =&gt; &#123;</span><br><span class="line">       //GET request <span class="keyword">for</span> remote image</span><br><span class="line">       var generateHideElement = <span class="keyword">function</span> (name, value) &#123;</span><br><span class="line">               var tempInput = document.createElement(<span class="string">"input"</span>);</span><br><span class="line">               tempInput.type = <span class="string">"hidden"</span>;</span><br><span class="line">               tempInput.name = name;</span><br><span class="line">               tempInput.value = value;</span><br><span class="line">               <span class="built_in">return</span> tempInput;</span><br><span class="line">           &#125;</span><br><span class="line">           var form = document.createElement(<span class="string">"form"</span>);</span><br><span class="line">           document.body.appendChild(form);</span><br><span class="line">           var positionCodeInput = generateHideElement(<span class="string">"positionCode"</span>, positionCode);</span><br><span class="line">           var positionNameInput = generateHideElement(<span class="string">"positionName"</span>, positionName);</span><br><span class="line">           form.appendChild(positionCodeInput);</span><br><span class="line">           form.appendChild(positionNameInput);</span><br><span class="line">           form.method = <span class="string">"post"</span>;</span><br><span class="line">           form.target = <span class="string">'_blank'</span>;</span><br><span class="line">           <span class="built_in">let</span> domainName = process.env.TMS_DOMAIN_NAME;</span><br><span class="line">           form.action = `<span class="variable">$&#123;domainName&#125;</span>/web/sysPosition/downloadPositionQrcodeImage`;</span><br><span class="line">           //form.action = `http://localhost:8089/web/sysPosition/downloadPositionQrcodeImage`;</span><br><span class="line">           form.submit();</span><br><span class="line">     &#125;);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 <h2 id="后端的实现"><a href="#后端的实现" class="headerlink" title="后端的实现"></a>后端的实现</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">    * 根据位置id下载二维码图片</span><br><span class="line">    */</span><br><span class="line">   @SuppressWarnings(&#123;<span class="string">"unchecked"</span>, <span class="string">"rawtypes"</span>&#125;)</span><br><span class="line">   @RequestMapping(value = <span class="string">"/downloadPositionQrcodeImage"</span>, method = RequestMethod.POST, produces = MediaType.IMAGE_JPEG_VALUE)</span><br><span class="line">   public ResultDTO downloadPositionQrcodeImage(@ModelAttribute DownloadPositionQrcodeImageParam param, HttpServletResponse response) &#123;</span><br><span class="line">       ResultDTO resultDTO = new ResultDTO();</span><br><span class="line">       OutputStream outputStream = null;</span><br><span class="line">       try &#123;</span><br><span class="line">           param.validate();</span><br><span class="line">           String positionCode = param.getPositionCode();</span><br><span class="line">           String positionName = param.getPositionName();</span><br><span class="line">           int length = positionName.length(),textWidth = length * 30,positionX = (800 - textWidth)/2;</span><br><span class="line">           response.setHeader(<span class="string">"Content-Disposition"</span>, <span class="string">"attachment; filename="</span> + positionCode + <span class="string">".jpg"</span>);</span><br><span class="line">           response.setHeader(<span class="string">"Content-Type"</span>, <span class="string">"image/jpeg"</span>);</span><br><span class="line">           outputStream = response.getOutputStream();</span><br><span class="line">           JSONObject accessTokenJson = wechatManager.doGetAccessToken();</span><br><span class="line">           ByteArrayInputStream fis = wechatManager.getWechatMiniAppCodeInputStream(accessTokenJson.getString(<span class="string">"access_token"</span>), param.getPositionCode());</span><br><span class="line">           BufferedImage result = constructNewImage(positionName, fis, positionX);</span><br><span class="line">           ImageIO.write(result, <span class="string">"jpg"</span>, outputStream);</span><br><span class="line">           outputStream.flush();</span><br><span class="line">       &#125; catch (Exception ex) &#123;</span><br><span class="line">           ex.printStackTrace();</span><br><span class="line">       &#125; finally &#123;</span><br><span class="line">           try &#123;</span><br><span class="line">               outputStream.close();</span><br><span class="line">           &#125; catch (IOException e) &#123;</span><br><span class="line">               e.printStackTrace();</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="built_in">return</span> resultDTO;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">public BufferedImage constructNewImage(String positionName,ByteArrayInputStream fis,int positionX) throws Exception&#123;</span><br><span class="line">       //add text into image</span><br><span class="line">       BufferedImage bufferedImage = new BufferedImage(800,800,BufferedImage.TYPE_INT_RGB);</span><br><span class="line">       Graphics2D dg = (Graphics2D) bufferedImage.createGraphics();;</span><br><span class="line">       dg.setColor(Color.WHITE);//设置笔刷白色</span><br><span class="line">       dg.fillRect(0,0,800,800);//填充整个屏幕</span><br><span class="line">       dg.dispose();</span><br><span class="line">       BufferedImage image = ImageIO.read(fis);</span><br><span class="line">       BufferedImage result = mergeImage(image, bufferedImage);</span><br><span class="line">       Graphics2D dg2 = (Graphics2D) result.createGraphics();;</span><br><span class="line">       dg2.setColor(Color.BLACK); //设置笔刷</span><br><span class="line">       dg2.setFont(dg.getFont().deriveFont(Font.PLAIN,30f));</span><br><span class="line">       dg2.drawString(positionName, positionX, 760);</span><br><span class="line">       dg2.dispose();</span><br><span class="line">       <span class="built_in">return</span> result;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   public BufferedImage mergeImage(BufferedImage b, BufferedImage d) &#123;</span><br><span class="line">       try &#123;</span><br><span class="line">           int w = b.getWidth();</span><br><span class="line">           int h = b.getHeight();</span><br><span class="line">           Graphics2D g = d.createGraphics();</span><br><span class="line">           g.drawImage(b, 100, 100, w, h, null);</span><br><span class="line">           g.dispose();</span><br><span class="line">       &#125; catch (Exception e) &#123;</span><br><span class="line">           System.out.println(e.getMessage());</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="built_in">return</span> d;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   /**</span><br><span class="line">    * 根据商圈id批量下载二维码图片</span><br><span class="line">    */</span><br><span class="line">   @SuppressWarnings(&#123;<span class="string">"unchecked"</span>, <span class="string">"rawtypes"</span>&#125;)</span><br><span class="line">   @RequestMapping(value = <span class="string">"/batchDownloadPositionQrcodeImage"</span>, method = RequestMethod.POST)</span><br><span class="line">   public ResultDTO batchDownloadPositionQrcodeImage(@ModelAttribute BatchDownloadPositionQrcodeImageParam param, HttpServletResponse response) &#123;</span><br><span class="line">       ResultDTO resultDTO = new ResultDTO();</span><br><span class="line">       OutputStream outputStream = null;</span><br><span class="line">       try &#123;</span><br><span class="line">           param.validate();</span><br><span class="line">           String addressId = param.getAddressId();</span><br><span class="line">           String addressName = param.getAddressName();</span><br><span class="line">           List&lt;QuerySystemPositionListDTO&gt; sysPositionCodeList = sysPositionService.getSysPositionCodeListByAddressId(addressId);</span><br><span class="line">           <span class="keyword">if</span> (CollectionUtils.isNotEmpty(sysPositionCodeList)) &#123;</span><br><span class="line">               JSONObject accessTokenJson = wechatManager.doGetAccessToken();</span><br><span class="line">               String access_token = accessTokenJson.getString(<span class="string">"access_token"</span>);</span><br><span class="line">               String downloadFilename = addressName + <span class="string">"_位置二维码.zip"</span>;</span><br><span class="line">               response.setContentType(<span class="string">"application/octet-stream"</span>);// 指明response的返回对象是文件流</span><br><span class="line">               response.setHeader(<span class="string">"Content-Disposition"</span>, <span class="string">"attachment;filename*=utf-8'zh_cn'"</span> + URLEncoder.encode(downloadFilename, <span class="string">"UTF-8"</span>));</span><br><span class="line">               ZipOutputStream zos = new ZipOutputStream(response.getOutputStream());</span><br><span class="line">               <span class="keyword">for</span> (QuerySystemPositionListDTO position : sysPositionCodeList) &#123;</span><br><span class="line">                   String positionCode = position.getPositionCode();</span><br><span class="line">                   String positionName = position.getPositionName();</span><br><span class="line">                   int length = positionName.length(),textWidth = length * 30,positionX = (800 - textWidth)/2;</span><br><span class="line">                   zos.putNextEntry(new ZipEntry(positionCode+<span class="string">".jpg"</span>));</span><br><span class="line">                   ByteArrayInputStream fis = wechatManager.getWechatMiniAppCodeInputStream(access_token, positionCode);</span><br><span class="line">                   BufferedImage result = constructNewImage(positionName, fis, positionX);</span><br><span class="line">                   InputStream inputStream = getImageStream(result);</span><br><span class="line">                   byte[] buffer = new byte[1024];</span><br><span class="line">                   int r = 0;</span><br><span class="line">                   <span class="keyword">while</span> ((r = inputStream.read(buffer)) != -1) &#123;</span><br><span class="line">                       zos.write(buffer, 0, r);</span><br><span class="line">                   &#125;</span><br><span class="line">                   fis.close();</span><br><span class="line">               &#125;</span><br><span class="line">               zos.flush();</span><br><span class="line">               zos.close();</span><br><span class="line">           &#125;</span><br><span class="line">       &#125; catch (Exception ex) &#123;</span><br><span class="line">           ex.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="built_in">return</span> resultDTO;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   public InputStream getImageStream(BufferedImage bimage)&#123;</span><br><span class="line">       InputStream is = null;</span><br><span class="line">       ByteArrayOutputStream bs = new ByteArrayOutputStream();</span><br><span class="line">       ImageOutputStream imOut;</span><br><span class="line">       try &#123;</span><br><span class="line">           imOut = ImageIO.createImageOutputStream(bs);</span><br><span class="line">           ImageIO.write(bimage, <span class="string">"png"</span>,imOut);</span><br><span class="line">           is= new ByteArrayInputStream(bs.toByteArray());</span><br><span class="line">       &#125; catch (IOException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="built_in">return</span> is;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
 
-        
       
     </div>
 
     
-
-    
-
-  </article>
-
       
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/cruz/2019/01/24/JavaScript中Promise使用/">JavaScript中Promise使用</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-24
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
-
-
-    <div class="post-content">
       
-        
-        
 
-        
-          <h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>Promise对象用于包装异步函数执行结果，以便用同步的方式处理其结果。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mypromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</span><br><span class="line"> <span class="comment">// asynchronous code to run here</span></span><br><span class="line"> <span class="comment">// call resolve() to indicate task successfully completed</span></span><br><span class="line"> <span class="comment">// call reject() to indicate task has failed </span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mypromise.then(</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params">successurl</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">document</span>.getElementById(<span class="string">'doggyplayground'</span>).innerHTML = <span class="string">'&lt;img src="'</span> + successurl + <span class="string">'" /&gt;'</span></span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="keyword">function</span>(<span class="params">errorurl</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">'Error loading '</span> + errorurl)</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<p>promise 包含3种状态：</p>
-<p><strong>pending</strong>： 初始状态</p>
-<p><strong>fulfilled</strong>:  完成状态</p>
-<p><strong>rejected</strong>: 失败状态</p>
-<h2 id="链式调用方法"><a href="#链式调用方法" class="headerlink" title="链式调用方法"></a>链式调用方法</h2><p>then()返回一个Promise对象 或者构造一个空白的Promise对象（如Promise.resolve()返回一个初始状态是fulfilled的延迟对象）</p>
-<h2 id="处理延迟对象数组"><a href="#处理延迟对象数组" class="headerlink" title="处理延迟对象数组"></a>处理延迟对象数组</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> twodoggypromises = [getImage(<span class="string">'dog1.png'</span>), getImage(<span class="string">'dog2.png'</span>)]</span><br><span class="line"><span class="built_in">Promise</span>.all(twodoggypromises).then(<span class="function"><span class="keyword">function</span>(<span class="params">urls</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(urls) <span class="comment">// logs ['dog1.png', 'dog2.png']</span></span><br><span class="line">&#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">urls</span>)</span>&#123; <span class="comment">// if any image fails to load, then() is skipped and catch is called</span></span><br><span class="line">    <span class="built_in">console</span>.log(urls) <span class="comment">// returns array of images that failed to load</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>Promise.all([]) 参数传入Promise对象数组 then中得到结果的数组<br>Promise.all() takes an iterable (array or array-like list) of promise objects, and waits until all of those promises have been fulfilled before moving on to any then() method attached to it. The then() method is passed an array of returned values from each promise.</p>
-<h2 id="解决Promise数组-有一个执行失败-就进入catch问题"><a href="#解决Promise数组-有一个执行失败-就进入catch问题" class="headerlink" title="解决Promise数组 有一个执行失败 就进入catch问题"></a>解决Promise数组 有一个执行失败 就进入catch问题</h2><p><strong>使用map</strong><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> doggies = [<span class="string">'dog1.png'</span>, <span class="string">'dog2.png'</span>, <span class="string">'dog3.png'</span>, <span class="string">'dog4.png'</span>, <span class="string">'dog5.png'</span>]</span><br><span class="line"><span class="keyword">var</span> doggypromises = doggies.map(getImage) <span class="comment">// call getImage on each array element and return array of promises</span></span><br><span class="line"><span class="keyword">var</span> sequence = <span class="built_in">Promise</span>.resolve()</span><br><span class="line"> </span><br><span class="line">doggypromises.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">curPromise</span>)</span>&#123; <span class="comment">// create sequence of promises to act on each one in succession</span></span><br><span class="line">    sequence = sequence.then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> curPromise</span><br><span class="line">    &#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">url</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> dog = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>)</span><br><span class="line">        dog.setAttribute(<span class="string">'src'</span>, url)</span><br><span class="line">        doggyplayground.appendChild(dog)</span><br><span class="line">    &#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(err + <span class="string">' failed to load!'</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
-
-        
+  <div class="post-copyright">
+    <p class="copyright-item">
+      <span>原文作者: </span>
+      <a href="https://gp15237125756.github.io/cruz">Cruz</a>
+    </p>
+    <p class="copyright-item">
+      <span>原文链接: </span>
+      <a href="https://gp15237125756.github.io/cruz/2019/02/13/前后分离环境下文件下载/">https://gp15237125756.github.io/cruz/2019/02/13/前后分离环境下文件下载/</a>
+    </p>
+    <p class="copyright-item">
+      <span>许可协议: </span>
       
-    </div>
-
-    
-
-    
-
-  </article>
-
-      
-        
-  <article class="post">
-    <header class="post-header">
-      <h1 class="post-title">
-        
-          <a class="post-link" href="/cruz/2019/01/24/hello-world/">Hello World</a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <span class="post-time">
-          2019-01-24
-        </span>
-        
-        
-      </div>
-    </header>
-
-    
-    
+      <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">知识共享署名-非商业性使用 4.0 国际许可协议</a>
+    </p>
+  </div>
 
 
-    <div class="post-content">
-      
-        
-        
-
-        
-          <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
-        
-      
-    </div>
-
-    
-
-    
-
-  </article>
 
       
       
-  <nav class="pagination">
     
+
+    
+      <footer class="post-footer">
+        
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/cruz/2019/01/24/JavaScript中Promise使用/">
+        <span class="next-text nav-default">JavaScript中Promise使用</span>
+        <span class="prev-text nav-mobile">下一篇</span>
+        <i class="iconfont icon-right"></i>
+      </a>
     
   </nav>
 
 
+      </footer>
     
-  </section>
+
+  </article>
+
 
           </div>
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
       </main>
@@ -413,6 +349,11 @@
     </div>
 
     
+  
+  
+
+  
+
 
 
     
