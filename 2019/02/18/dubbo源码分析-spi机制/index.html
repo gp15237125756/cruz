@@ -198,10 +198,10 @@
       
         <h2 id="用法"><a href="#用法" class="headerlink" title="用法"></a>用法</h2><ol>
 <li><p>定义接口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class Hilary implements SayHello&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void sayHello() &#123;</span><br><span class="line">        System.out.println(&quot;Trump is pig!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@SPI</span><br><span class="line">public interface SayHello &#123;</span><br><span class="line"></span><br><span class="line">    void sayHello();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>实现接口</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">public class MarcoRubio implements SayHello&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void sayHello() &#123;</span><br><span class="line">        System.out.println(&quot;the ZTE is doing harm to our country!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class Hilary implements SayHello&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void sayHello() &#123;</span><br><span class="line">        System.out.println(&quot;Trump is pig!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public class MarcoRubio implements SayHello&#123;</span><br><span class="line">    @Override</span><br><span class="line">    public void sayHello() &#123;</span><br><span class="line">        System.out.println(&quot;the ZTE is doing harm to our country!&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在类路径下resources下创建META-INF/dubbo，在以上目录创建以接口全名为文件名，key=value格式定义实现类<br>文件内容如下</p>
 </li>
@@ -315,6 +315,12 @@ extensionClasses中获取当前name的值
         
         
   <nav class="post-nav">
+    
+      <a class="prev" href="/cruz/2019/02/19/dubbo源码分析-服务导出/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Hello World</span>
+        <span class="prev-text nav-mobile">上一篇</span>
+      </a>
     
     
       <a class="next" href="/cruz/2019/02/15/一次Mybatis sql故障解析/">
